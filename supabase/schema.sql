@@ -66,6 +66,7 @@ create table if not exists public.cards (
   id uuid primary key default gen_random_uuid(),
   room_id uuid not null references public.rooms(id) on delete cascade,
   column_id uuid not null references public.columns(id) on delete cascade,
+  origin_column_id uuid references public.columns(id) on delete set null,
   group_id uuid references public.card_groups(id) on delete set null,
   author_participant_id uuid not null references public.participants(id) on delete cascade,
   content text not null,
@@ -79,7 +80,19 @@ create table if not exists public.cards (
 do $$
 begin
   alter table public.cards add column if not exists group_id uuid;
+  alter table public.cards add column if not exists origin_column_id uuid;
   alter table public.cards add column if not exists position integer not null default 0;
+
+  if not exists (
+    select 1
+    from pg_constraint
+    where conname = 'cards_origin_column_id_fkey'
+  ) then
+    alter table public.cards
+      add constraint cards_origin_column_id_fkey
+      foreign key (origin_column_id) references public.columns(id)
+      on delete set null;
+  end if;
 
   if not exists (
     select 1
