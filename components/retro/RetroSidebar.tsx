@@ -55,7 +55,7 @@ export function RetroSidebar({ room, participant, currentPhase, collapsed, isCom
     <aside
       style={asideRailVar}
       className={cn(
-        "relative flex h-full shrink-0 flex-col overflow-hidden border-[#ded8e8]/80 bg-white/76 py-5 text-slate-900 shadow-[16px_0_50px_rgba(49,46,78,0.06)] backdrop-blur-2xl",
+        "relative flex h-full min-h-0 shrink-0 flex-col overflow-hidden border-[#ded8e8]/80 bg-white/76 py-5 text-slate-900 shadow-[16px_0_50px_rgba(49,46,78,0.06)] backdrop-blur-2xl",
         collapsed ? "px-0" : "px-3",
         "transition-[width] duration-200 ease-out motion-reduce:transition-none",
         collapsed ? "w-[92px]" : "w-[280px]",
@@ -76,7 +76,12 @@ export function RetroSidebar({ room, participant, currentPhase, collapsed, isCom
         {collapsed ? <ChevronRight className="pointer-events-none h-4 w-4 transition group-hover:translate-x-0.5" /> : <ChevronLeft className="pointer-events-none h-4 w-4 transition group-hover:-translate-x-0.5" />}
       </button>
 
-      <div className="flex min-h-0 flex-1 flex-col overflow-x-hidden overflow-y-hidden pt-14">
+      <div
+        role="region"
+        aria-label="Retrospective sidebar content"
+        tabIndex={0}
+        className="mt-14 flex min-h-0 flex-1 flex-col overflow-x-hidden overflow-y-auto overscroll-y-contain outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[#8c83ad]"
+      >
         <div className={cn("flex shrink-0 items-start pr-10", HEADER_BLOCK)}>
           <div className="min-w-0 flex-1 overflow-hidden">
             <p
@@ -204,7 +209,7 @@ export function RetroSidebar({ room, participant, currentPhase, collapsed, isCom
           </ol>
         </nav>
 
-        <div className={cn("space-y-1.5 overflow-x-hidden", discuss ? "mt-4" : "mt-5")}>
+        <div className={cn("shrink-0 space-y-1.5 overflow-x-hidden", discuss ? "mt-4" : "mt-5")}>
           <p
             className={cn(
               "h-4 overflow-hidden px-1 text-[10px] font-bold uppercase leading-4 tracking-[0.22em] text-[#9a94ad] transition-[max-width,opacity] duration-200 ease-out motion-reduce:transition-none",
